@@ -7,6 +7,8 @@ This repository contains the development files for a high-performance Embedded S
 
 Our team is currently prototyping a versatile signal analysis tool—bridging the gap between a **Digital Storage Oscilloscope (DSO)** and a **Logic Analyzer**—leveraging the high-speed ADC and timer peripherals of an STM32 microcontroller.
 
+Since we're still in the very early stages of design, we still haven't finalized a project idea. We used [this spreadsheet](https://docs.google.com/spreadsheets/d/1c4ig7kL9RMhuinxaQc5WXjQi0AXQLVWwPb6mW5JvGkM/edit?usp=sharing) to gather and vote on ideas, and may switch to another highly favored project.
+
 ---
 
 ## Proposed Core Features
