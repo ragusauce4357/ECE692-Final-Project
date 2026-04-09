@@ -1,7 +1,8 @@
 # Low Speed Storage Oscilloscope with DSP (ECE692)
 
 > [!NOTE]
-> We have just begun development of this project, and the idea itself hasn't been finalized. Everything is TDB.
+> THIS IS SOME OLD STUFF!
+> gonna have to clean up and merge later. Don't hastily merge anything yet plz.
 
 This repository contains the development files for a high-performance Embedded Systems project as part of **ECE692** at the **New Jersey Institute of Technology**. 
 
