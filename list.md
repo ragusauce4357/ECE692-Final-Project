@@ -11,7 +11,6 @@
 Level shifting:
 
 1x TXS0108E (8 channel, general purpose)
-1x PCA9306 (2 channel, I2C open-drain)
 
 ## CAN bus:
 
