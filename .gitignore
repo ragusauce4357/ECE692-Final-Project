@@ -3,6 +3,7 @@
 **/.DS_Store
 **/Thumbs.db
 **/*build
+*.g.html
 
 # Created by https://www.toptal.com/developers/gitignore/api/vim,visualstudiocode,cmake,kicad,freecad,c++,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=vim,visualstudiocode,cmake,kicad,freecad,c++,python
