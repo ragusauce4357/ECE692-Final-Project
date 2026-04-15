@@ -20,6 +20,53 @@ Put all software notes/changelog stuff here. Try to format something like below 
 
 This format is adopted from [keepachangelog.com](https://keepachangelog.com).
 
+## 4/14/2025 - 10:41 pm
+
+### Changed 
+
+- Just a note: always feel free to make changes here. This is not final by any means
+- Also worth nothing this is just for the receiver STM32. 
+- Updated the clock tree to 168 MHz HCLK. It was previously 72 MHz, but I saw that 
+we can increase it by adjusting the prescaler values. 
+    - Here's the flow now: 
+    - HSE (8 MHz) --> PLLM(/4) --> PLLN(x168) --> PLLP(/2) = 168 MHz
+    - PLLQ = 7 - this provides our 48 MHz for the USB OTG FS
+    - The APB1 prescaler is /4 for 42 MHz 
+    - The APB2 prescaler is /2 for 84 MHz
+- Adjusted the TIM1 PSC accordingly. Now, TIM1 PSC = 0 and ARR = 167. This provides the 
+1 MHz sample rate for us. Here are the calculations involved for this (got some assistant from Claude)
+    - General Formula: [(HCLK)]/[(PSC+1)(ARR+1)]
+    - When you plug in PSC = 0 and ARR = 167, u get 1 MHz
+    - Also enabled the auto-reload preload
+
+- Updated the DMA2 Stream5 settings
+    - Adjusted the Data width to byte/byte instead of half word (honestly, have to think this one through more with our workflow, but I think this makes sense?)
+    - Disabled the FIFO - apparently, the FIFO buffers multiple transfers before moving it to the memory and waits for it to fill up, which is bad for us because the samples will wait on the FIFO instead of being written to memory immediately when the timer is fired. So too much delay for a logic analyzer, but open to suggestions here too
+    - Set the priority to High as well. DMA is pretty important
+
+- Set the NVIC priorities
+    - TIM1 update interrupt and DMA2 Stream5 interrupt: 0 (high priority)
+    - USB OTG FS interrupt: 1
+    - Timer and DMA need to be higher priority. If the timer gets delayed, our samples won't be taken at exact intervals, and this will mess up our decoding. So I set them to the highest priority, although we might have to put it at 1 and USB at 2 to allow more critical stuff to have the highest priority. 
+    - USB is less critical cuz it's just data transport. Even if it fires a little later, it can sit in the buffer we talked about. So we don't lose samples. 
+
+
+### Added
+
+- I added the CAN1 because bxCAn can properly decode the frames in the hardware. We need to discuss this more, and I did a little with Arnav, but here's the thing:
+    - So if we have CAN at 500kbps (we can have less too)
+        - 500kbps x 2 (nyquist rate) = 1 MHz sample rate = 2 samples per bit
+        - Apparently, this is a little unsafe, and also we're right at that 1 MHz boundary. When u sample, u need to get the center reliably, and with just 2 samples, if the sample is slightly off center we can get misreads. We're cutting it too close. 
+        - The recommended is sampling at 8-10 times. 
+        - bxCAN solves these issues because it's a dedicated peripheral inside the STM32 just to decode CAN frames. It also has its own internal clocks too. So it'll decode it on the STM32, unlike how we decode the other protocols (UART, SPI, I2C) in Python
+    - So CAN1 is at 500 kbps: 
+        - PSC = 6, BS1 = 11, BS2 = 2 - Calculations r lowkey annoying to type up here, but I can show u guys
+        - It's gonna use the 42 MHz APB1 clock
+        - I enabled the RX0 interrupt since this is for the receiver STM
+        - CAN1_RX = PB8
+        - CAN1_TX = PB9
+- It's way too much to read but just for documentation. Hope it helps a bit
+
 ## 2a7a1ed
 
 ### Added
