@@ -451,7 +451,7 @@ void send_logic_packet(uint8_t *data_ptr)
 	packet[515] = checksum;
 
 	//Monitor for overflows here!
-	if (HAL_UART_Transmit(&huart2, packet, 516, 10) != HAL_OK)
+	if (CDC_Transmit_FS(packet, 516) != USBD_OK)
 	{
 		//This means that the PC isn't reading fast enough
 	    static uint32_t dropped_packets = 0;
