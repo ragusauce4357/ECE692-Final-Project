@@ -1,0 +1,43 @@
+{
+    "connection": {
+        "tcp_host": "127.0.0.1",
+        "tcp_port": 5000,
+        "com_port": "COM3",
+        "go_binary": ""
+    },
+    "capture": {
+        "sample_rate": 1000000,
+        "view_window_ms": 10.0,
+        "max_display_samples": 200000,
+        "auto_scroll": true
+    },
+    "decode": {
+        "uart": {
+            "enabled": true,
+            "baud_rate": 115200,
+            "tx_channel": 0,
+            "rx_channel": 1
+        },
+        "spi": {
+            "enabled": true,
+            "clk_channel": 2,
+            "mosi_channel": 3,
+            "miso_channel": 4,
+            "cs_channel": 5
+        },
+        "i2c": {
+            "enabled": true,
+            "sda_channel": 6,
+            "scl_channel": 7
+        },
+        "can": {
+            "enabled": true,
+            "note": "CAN is decoded by STM32 bxCAN peripheral, not in software"
+        }
+    },
+    "ui": {
+        "theme": "dark",
+        "can_table_max_rows": 500,
+        "annotation_max_per_channel": 300
+    }
+}

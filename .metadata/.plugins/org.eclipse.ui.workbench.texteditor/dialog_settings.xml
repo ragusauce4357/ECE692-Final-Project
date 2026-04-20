@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<item key="replaceBarOpen" value="false"/>
+	<list key="searchhistory">
+		<item value="prescaler"/>
+		<item value="loopba"/>
+		<item value="presca"/>
+		<item value="printf"/>
+		<item value="MX_TIM"/>
+		<item value="hcan1"/>
+		<item value="MX_CAN1_INIT"/>
+		<item value="Send_logi"/>
+		<item value="CHUNK_SIZE"/>
+	</list>
+</section>

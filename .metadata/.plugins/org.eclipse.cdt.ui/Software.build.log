@@ -1,0 +1,10 @@
+20:04:53 **** Incremental Build of configuration Debug for project Software ****
+make -j20 all 
+arm-none-eabi-size  Software.elf 
+   text	   data	    bss	    dec	    hex	filename
+  40748	    268	  10036	  51052	   c76c	Software.elf
+Finished building: default.size.stdout
+ 
+
+20:04:54 Build Finished. 0 errors, 0 warnings. (took 432ms)
+
