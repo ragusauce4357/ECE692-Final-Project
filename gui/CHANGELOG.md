@@ -16,6 +16,30 @@ Put all GUI and visualization notes/changelog stuff here. Format adopted from [k
 
 ---
 
+GUI stuff. Test it out for yourself by pulling from the branch and running **python gui.py --test**. 
+
+## 2f5993b
+
+### Added 
+- We have a functional GUI display that looks like a bootleg version of a real logic analyzer so far. 
+- Compared to the initial version (not the previous commit), I added these things below. 
+- Color-coded measurement pairs: each Δt measurement gets a unique color (cycles through yellow, cyan, pink, green, orange, purple, mint, red) so multiple measurements are easy to tell apart
+- "Reset last marker" button so that it'll remove only the most recently placed measurement pair, without wiping everything. 
+- Scroll area inside the settings panel so you can scroll through all controls without needing to drag the splitter to expand the bottom section
+- Memory depth combo (Mem depth) is now functional: controls how many samples are kept in the logic buffer (5 ms to 500 ms). Previously it existed in the UI but had no effect
+
+### Changed
+
+- Simplified the measurement display: the horizontal dashed line and Δt/freq label now only appear once in the middle channel row (at the vertical midpoint), instead of repeating across every channel row. Label sits directly on top of the dashed line. Arnav and Will saw how bad it looked lol. 
+- "Clear measurements" button renamed to "Clear all measurements" to distinguish it from the new reset-last button
+- Renamed the decoder.py to packets.py (contains constants and packet parsing only -- no software decoders since Go handles UART/SPI/I2C)
+
+### TO-DOs
+- The display works but the bottom section expanding is super clunky and it's difficult to have to expand it each time to change a configuration, such as having to clear the measurements or changing the sample rate. So it's probably better to put some of those up top and also make the bottom section's expansion continuous rather than state based. This is kind of hard to explain over text, but I can show it in person. 
+- We still have to work on building an artificial CAN waveform based on the times and data we receive from the CAN decoded frames. 
+- A lot of finishing touches left on the GUI side to make it look good. But it matters more to get the system to work than for it to look attractive. 
+
+
 ## 5dc61cd
 
 ### Added
