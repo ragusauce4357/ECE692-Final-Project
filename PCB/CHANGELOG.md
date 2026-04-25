@@ -16,6 +16,11 @@ Put all PCB notes/changelog stuff here. Format adopted from [keepachangelog.com]
 ## <older date/hash>
 ```
 
+## 736f2f9
+
+- Finished the schematic, assigned most footprints, and did some of the layout.
+- Still need to finish the morpho connector and PCB layout and routing
+
 ## a591ddc
 
 - added initial kicad project
