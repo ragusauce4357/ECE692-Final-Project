@@ -19,6 +19,18 @@ Put all software notes/changelog stuff here. Try to format something like below 
 ```
 
 This format is adopted from [keepachangelog.com](https://keepachangelog.com).
+
+## eff3053
+
+### Changed
+- In the receiver firmware, I changed it to use HalfWord DMA data width. The GPIO IDR is a 16 bit register, but the DMA transfer width actually controls how many bits it reads and writes at a time. So in Byte mode, which it was previously at, even though the GPIOC_IDR is 16-bits, the DMA only reads the low 8-bits of it and writes that byte to dma_buf. So it ignores the upper 8 bits. This is a problem for us because since we're using PC1-PC8 for the channels and PC0 as the status LED, PC8 actually overlaps past that 8 bits (PC0-PC7 is 8 bits). So we'll end up missing PC8 in that transfer with Byte Mode since the DMA completely ignores the upper 8 bits. 
+- With HalfWord mode tho, the DMA reads all 16 bits and writes the 2 bytes to dma_buf. 
+- Updated the logic packet size from 516 to 1028 bytes. This is because we're now taking 512 samples of 2 bytes (HalfWord) instead of 1 byte, so 512x2 = 1024 bytes for the data. The 1028 bytes = 3 header bytes (packet 0: 0xAA, packet 1: 0xBB, packet 2: seq_num) + 1024 data bytes + 1 checksum byte. 
+- Updated the memcpy to copy DATA_CHUNK*2 bytes (1024 bytes = 512 uint16_t samples). 
+- Updated the checksum index from packet[515] to packet[1027] - last index. 
+
+- TODOs: We have to update the Go decoder to expect a 1028-byte packet structure with 512 uint16_t samples of 2 bytes each. 
+
 ## 6f83e89
 
 ### Added
