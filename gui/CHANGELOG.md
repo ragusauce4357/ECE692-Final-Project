@@ -18,6 +18,17 @@ Put all GUI and visualization notes/changelog stuff here. Format adopted from [k
 
 GUI stuff. Test it out for yourself by pulling from the branch and running **python gui.py --test**. 
 
+## 48abe6b
+
+### Added
+- Blue checkmark for the check boxes on the protocol decode panel. Before a solid blue box was what appeared. I added a checkmark.png to the src for this
+### Changed
+- Instead of labels being resized and waveforms not, both waveforms and labels can’t be resized so the waveforms stay vertically aligned with their labels
+- Scroll bar for the waveforms will always appear now if there isn’t enough space to fit everything. Before it wouldn’t always appear when it should've
+- The connection panel and protocol decode panel are now tabbed in the bottom right corner rather than being separated by a splitter. Since they both occupy a small part of the screen, them using a splitter led to difficulty changing stuff in the protocol decode panel as resizing would exclusively shrink that panel and not the connections panel. Doing this required importing QTabWidget
+- Resizing the different panels now appears visually as you drag the border and is not clunky like before
+
+
 ## 2f5993b
 
 ### Added 
