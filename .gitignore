@@ -320,3 +320,9 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,visualstudiocode,cmake,kicad,freecad,c++,python
 .metadata/
+firmware-receiver/Debug/
+firmware-receiver/Release/
+firmware-transmitter/Debug/
+firmware-transmitter/Release/
+firmware-receiver/.metadata/
+firmware-transmitter/.metadata/
