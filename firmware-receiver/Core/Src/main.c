@@ -51,17 +51,17 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 #define DATA_CHUNK 512
-#define DMA_BUF_SIZE (DATA_CHUNK*2) // 1024 uint16 elements, 2048 bytes in RAM
+#define DMA_BUF_SIZE (DATA_CHUNK*2) // 1024 bytes
 
 //The DMA will dump the GPIO samples here
 //I'm using the ping-pong idea we talked about but with the circular array
-//So we have one array of 1024 uint16_t elements holding 2 chunks of 512 samples
-//Each sample is 2 bytes (uint16_t) so the total buffer is 2048 bytes in memory
+//So we have one array of 1024 uint8_t elements holding 2 chunks of 512 samples
+//Each sample is 1 byte capturing PC0-PC7 (all 8 channels fit into low byte)
 
 //Basically, when the USB is transmitting, new samples still need somewhere to go
 //So the idea is, when the DMA is half full, the USB can transmit samples
 //from position 0 while new samples get written to position 512 and onward.
-uint16_t dma_buf[DMA_BUF_SIZE];
+uint8_t dma_buf[DMA_BUF_SIZE];
 static uint8_t logic_seq_num = 0;
 static uint8_t can_seq_num = 0;
 /* USER CODE END PV */
@@ -383,23 +383,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Status_LED_GPIO_Port, Status_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(Status_LED_GPIO_Port, Status_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : Status_LED_Pin */
-  GPIO_InitStruct.Pin = Status_LED_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(Status_LED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Channel_1_Pin Channel_2_Pin Channel_3_Pin Channel_4_Pin
                            Channel_5_Pin Channel_6_Pin Channel_7_Pin Channel_8_Pin */
@@ -416,6 +409,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : Status_LED_Pin */
+  GPIO_InitStruct.Pin = Status_LED_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(Status_LED_GPIO_Port, &GPIO_InitStruct);
+
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
   /* USER CODE END MX_GPIO_Init_2 */
@@ -429,31 +429,31 @@ static void MX_GPIO_Init(void)
 //  return ch;
 //}
 
-// Fires when DMA has filled the buffer with 512 samples (1024 bytes)
+// Fires when DMA has filled the buffer with 512 samples (512 bytes)
 // Sends the raw samples over USB to PC where our Go and Python apps will take over
 // CDC_Transmit_FS handles splitting into 64 byte USB transactions internally
-// We just pass the full 1028 byte packet and the USB stack takes care of it
-// Format: [0xAA][0xBB][seq#][512 uint16 samples=1024 bytes][checksum]
-void send_logic_packet(uint16_t *data_ptr)
+// We just pass the full 516 byte packet and the USB stack takes care of it
+// Format: [0xAA][0xBB][seq#][512 uint8 samples=512 bytes][checksum]
+void send_logic_packet(uint8_t *data_ptr)
 {
 	//made this static so it persists during USB transfer
-	static uint8_t packet[1028]; // 3 header + 1024 data + 1 checksum
+	static uint8_t packet[516]; // 3 header + 512 data + 1 checksum
 	packet[0] = 0xAA;
 	packet[1] = 0xBB;
 	packet[2] = logic_seq_num++;
 
 	//I found that memcpy works much faster than a typical for loop
 	//it's optimized at the hardware level
-	memcpy(&packet[3], data_ptr, DATA_CHUNK*2);
+	memcpy(&packet[3], data_ptr, DATA_CHUNK);
 
     uint8_t checksum = 0;
-	for (int i = 0; i < 1027; i++) {
+	for (int i = 0; i < 515; i++) {
 		checksum ^= packet[i];
 	}
-	packet[1027] = checksum;
+	packet[515] = checksum;
 
 	//Monitor for overflows here!
-	if (CDC_Transmit_FS(packet, 1028) != USBD_OK)
+	if (CDC_Transmit_FS(packet, 516) != USBD_OK)
 	{
 		//This means that the PC isn't reading fast enough
 	    static uint32_t dropped_packets = 0;
