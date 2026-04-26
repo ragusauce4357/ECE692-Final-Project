@@ -8,8 +8,9 @@ import (
 	"slices"
 	"strings"
 
-	bugst "go.bug.st/serial"
 	"github.com/ragusauce4357/ECE692-Final-Project/SignalDecoder/internal/logging"
+	"go.bug.st/serial"
+	bugst "go.bug.st/serial"
 )
 
 // For the constants, mapping protocol to a uint8.
@@ -26,15 +27,21 @@ type ProtocolType uint8
 // Unused values are set to 0.
 //
 // For example: SPI with respective pins on channels 4, 3, 5, 1:
+// ```
 //   - 0b0100,0011,0101,0001
 //     4    3    5    1
 //   - 0x4351
 //
+// ```
+//
 // Order matters! So if cli argument is --port scl7sda1, the
 // correct order is sda then scl, so the ProtocolPins would be
+// ```
 //   - 0b0001,0111,0000,0000
 //     1    7    0    0
 //   - 0x1700
+//
+// ```
 //
 // It is used internally only. Not exported to python script.
 type ProtocolPins uint16
@@ -56,6 +63,7 @@ type Config struct {
 	Protocol ProtocolType
 	Pins     ProtocolPins
 }
+
 // Performs a logical xor of two bools.
 // Funny how the language has no native support
 // for this.
@@ -79,8 +87,14 @@ func GetConfig() (*Config, error) {
 	pins := flag.String("pins", "", "(Optional) Channels to use to perform protocol decoding.")
 	duration := flag.Float64("duration", float64(0x0), "Duration (in ms) to run signal capture.")
 	protocol := flag.String("protocol", "", "(Optional) Protocol to decode.")
+	list := flag.Bool("list", false, "List available ports")
 
 	flag.Parse()
+
+	if *list {
+		printPorts()
+		return nil, errors.New(logging.ErrLog(preamble) + "Listed available ports.")
+	}
 
 	log.Print(logging.StatLog(preamble) + "Parsing arguments...")
 
@@ -194,8 +208,25 @@ func (a *Config) Print() {
 	preamble := "[print] "
 
 	log.Printf(logging.StatLog(preamble) + "Current configuration:\n")
-	log.Printf(logging.StatLog(preamble) + "  Port:     %s\n", a.Port)
-	log.Printf(logging.StatLog(preamble) + "  Duration: %f\n", a.Duration)
-	log.Printf(logging.StatLog(preamble) + "  Protocol: %d\n", a.Protocol)
-	log.Printf(logging.StatLog(preamble) + "  Pins:     0x%X\n", a.Pins)
+	log.Printf(logging.StatLog(preamble)+"  Port:     %s\n", a.Port)
+	log.Printf(logging.StatLog(preamble)+"  Duration: %f\n", a.Duration)
+	log.Printf(logging.StatLog(preamble)+"  Protocol: %d\n", a.Protocol)
+	log.Printf(logging.StatLog(preamble)+"  Pins:     0x%X\n", a.Pins)
+}
+
+func printPorts() {
+	preamble := "[printPorts]: "
+
+	ports, err := serial.GetPortsList()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(ports) == 0 {
+		log.Printf(logging.ErrLog(preamble) + "No serial ports found!")
+	} else {
+		for _, port := range ports {
+			log.Printf(logging.StatLog(preamble)+"Found port: %v\n", port)
+		}
+	}
 }
