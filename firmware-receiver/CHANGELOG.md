@@ -20,6 +20,27 @@ Put all software notes/changelog stuff here. Try to format something like below 
 
 This format is adopted from [keepachangelog.com](https://keepachangelog.com).
 
+
+
+## fb27eb7
+- Moved the status LED to PC8 so the channels can be the low order byte from PC0-PC7. 
+- Here's the channel map now: 
+    - PC0 = Channel 1
+    - PC1 = Channel 2
+    - PC2 = Channel 3
+    - PC3 = Channel 4
+    - PC4 = Channel 5
+    - PC5 = Channel 6
+    - PC6 = Channel 7
+    - PC7 = Channel 8
+    - PC8 = Status LED
+- Reverted the dma_buf from uint16_t back to uint8_t
+- Reverted the DMA data width from HalfWord back to byte. 
+- Reverted logic packet from 1028 back to 516 bytes (3 header + 512 data + 1 checksum)
+- Reverted memcpy from DATA_CHUNK*2 back to DATA_CHUNK
+- Reverted checksum index from packet[1027] back to packet[515]
+- Note: Go decoder should now expect 516-byte logic packets with 512 uint8 samples, PC0=CH1 through PC7=CH8
+
 ## eff3053
 
 ### Changed
