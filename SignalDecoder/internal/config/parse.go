@@ -183,7 +183,7 @@ func parseCAN(pins string) (ProtocolPins, error) {
 		return 0, errors.New(logging.ErrLog(preamble) + "Canh channel cannot equal canl channel")
 	}
 
-	log.Printf(logging.StatLog(preamble) + "Using channels %d, %d, for canh and canl\n", canhInt, canlInt)
+	log.Printf(logging.StatLog(preamble)+"Using channels %d, %d, for canh and canl\n", canhInt, canlInt)
 
 	canhInt = canhInt << 12
 	canlInt = canlInt << 8
