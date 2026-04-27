@@ -1,43 +1,38 @@
-import test  # Imports your test.py module
+import test
 import os
 
-def generate_to_file(filename, iterations=1):
+def generate_to_file(filename, iterations=1, tx_channel=1):
     """
-    Generates the bitstream packets and writes them to a binary file.
+    Generates logic and CAN packets and writes them to a binary file
+    for offline testing without a virtual COM port.
     """
-    # Using the same message from the logic analyzer simulation
-    message = b"Hello World!\x00"
     seq_num = 0
-    
-    # We use 'wb' mode for writing raw binary data
+    message = b"Hello World!\x00"
+
     with open(filename, 'wb') as f:
-        print(f"[*] Generating {iterations} iteration(s) of the message...")
-        
+        print(f"[*] Generating {iterations} iteration(s)...")
+
         for _ in range(iterations):
-            all_pairs = []
-            
-            # Step 1: Use functions from test.py to create bitstream
-            for char_code in message:
-                bits = test.get_uart_bits(char_code)
-                print(bits)
-                # This uses the Channel 1 mapping (0x01) from your updated logic
-                all_pairs.extend(test.generate_rle_pairs(bits))
-            
-            # Add the UART Idle period (Logic High / 0x01)
-            all_pairs.extend([[0x01, 255], [0x01, 255]])
-            
-            # Step 2: Packetize into 64-byte chunks (30 pairs each)
-            for i in range(0, len(all_pairs), 30):
-                chunk = all_pairs[i : i + 30]
-                packet = test.create_64_byte_packet(chunk, seq_num)
-                
-                # Write the raw 64-byte packet to the file
-                f.write(packet)
-                seq_num += 1
+            # generate and write a logic packet
+            samples = test.generate_uart_samples(message, tx_channel)
+            logic_pkt = test.create_logic_packet(samples, seq_num)
+            f.write(logic_pkt)
+            print(f"[+] Logic packet seq={seq_num} ({len(logic_pkt)} bytes)")
+            seq_num += 1
+
+            # generate and write a CAN packet
+            can_pkt = test.create_can_packet(
+                seq_num,
+                can_id=0x123,
+                data=bytes([0xCA, 0xFE, 0xBA, 0xBE, 0xDE, 0xAD, 0xBE, 0xEF])
+            )
+            f.write(can_pkt)
+            print(f"[+] CAN packet seq={seq_num} id=0x123 ({len(can_pkt)} bytes)")
+            seq_num += 1
 
     print(f"[+] Done! Written to {filename} ({os.path.getsize(filename)} bytes)")
 
 if __name__ == "__main__":
     output_file = "capture_test.bin"
-    # Generating 1 iteration is usually enough for manual verification
-    generate_to_file(output_file, iterations=1)
+    tx_channel = int(input("Enter TX channel number (1-8): "))
+    generate_to_file(output_file, iterations=5, tx_channel=tx_channel)

@@ -44,7 +44,7 @@ func parseUART(pins string) (ProtocolPins, error) {
 
 	log.Printf(logging.StatLog(preamble)+"Using channels %d, %d, for tx and rx\n", txInt, rxInt)
 
-	if txInt >= 8 || rxInt >= 8 || txInt == 0 || rxInt == 0 {
+	if txInt > 8 || rxInt > 8 || txInt == 0 || rxInt == 0 {
 		return 0, errors.New(logging.ErrLog(preamble) + "Channel number out of bounds")
 	}
 
@@ -91,7 +91,7 @@ func parseSPI(pins string) (ProtocolPins, error) {
 		csInt, _ = strconv.Atoi(cs)
 	}
 
-	if misoInt >= 8 || mosiInt >= 8 || clkInt >= 8 || csInt >= 8 ||
+	if misoInt > 8 || mosiInt > 8 || clkInt > 8 || csInt > 8 ||
 		misoInt == 0 || mosiInt == 0 || clkInt == 0 {
 		return 0, errors.New(logging.ErrLog(preamble) + "Channel number out of bounds")
 	}
@@ -139,7 +139,7 @@ func parseI2C(pins string) (ProtocolPins, error) {
 
 	log.Printf(logging.StatLog(preamble)+"Using channels %d, %d, for sda and scl\n", sdaInt, sclInt)
 
-	if sdaInt >= 8 || sclInt >= 8 || sdaInt == 0 || sclInt == 0 {
+	if sdaInt > 8 || sclInt > 8 || sdaInt == 0 || sclInt == 0 {
 		return 0, errors.New(logging.ErrLog(preamble) + "Channel number out of bounds")
 	}
 
@@ -157,6 +157,9 @@ func parseI2C(pins string) (ProtocolPins, error) {
 
 // Parses a string of format "canh0canl1" into canh and canl
 // channel numbers.
+// I commented this out since the decoding for CAN is done on the STM with bxCAN
+// If needed, we can always revert to this. 
+/*
 func parseCAN(pins string) (ProtocolPins, error) {
 	preamble := "[parseCAN]: "
 
@@ -192,3 +195,4 @@ func parseCAN(pins string) (ProtocolPins, error) {
 
 	return ProtocolPins(canhInt | canlInt), nil
 }
+*/

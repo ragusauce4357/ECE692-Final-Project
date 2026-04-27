@@ -52,7 +52,7 @@ const (
 	UART
 	SPI
 	I2C
-	CAN
+	//CAN
 )
 
 // Config struct, specifies which port, duration, which protocol
@@ -141,8 +141,13 @@ func GetConfig() (*Config, error) {
 		ret.Protocol = SPI
 	case "I2C":
 		ret.Protocol = I2C
-	case "CAN":
-		ret.Protocol = CAN
+
+	// Commenting out CAN here since it's decoded in bxCAN now.
+	// We can always revert if need be.
+	/*
+		case "CAN":
+		 	ret.Protocol = CAN
+	*/
 	default:
 		return nil, errors.New(logging.ErrLog(preamble) + "Unrecognized comm protocol.")
 	}
@@ -184,13 +189,17 @@ func parsePins(p ProtocolType, pins string) (ProtocolPins, error) {
 		} else {
 			return ret, nil
 		}
-	case CAN:
-		ret, err := parseCAN(pins)
-		if err != nil {
-			return 0, err
-		} else {
-			return ret, nil
-		}
+	// Commenting out CAN here since it's decoded in bxCAN now.
+	// We can always revert if need be.
+	/*
+		case CAN:
+			ret, err := parseCAN(pins)
+			if err != nil {
+				return 0, err
+			} else {
+				return ret, nil
+			}
+	*/
 	case NONE:
 		log.Print(logging.StatLog(preamble) + "No pin configuration provided. Proceeding.")
 		return 0, nil
