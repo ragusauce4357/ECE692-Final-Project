@@ -16,6 +16,12 @@ Put all SignalDecoder notes/changelog stuff here. Format adopted from [keepachan
 ## <older date/hash>
 ```
 
+## ef28400d
+
+### Changed
+
+- **UPDATE:** The version in the last commit works. I'm just dumb and ran `go install` on an older version, and so the path variable was running the old version rather than the new version. The latest code works as expected.
+
 ## 53628d3
 
 ### Added
