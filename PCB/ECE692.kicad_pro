@@ -448,7 +448,6 @@
       "footprint_filter": "ignore",
       "footprint_link_issues": "warning",
       "four_way_junction": "ignore",
-      "global_label_dangling": "warning",
       "ground_pin_not_ground": "warning",
       "hier_label_mismatch": "error",
       "isolated_pin_label": "warning",
@@ -490,7 +489,7 @@
     ]
   },
   "meta": {
-    "filename": "ECE692_1.kicad_pro",
+    "filename": "ECE692_3.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -527,7 +526,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "../GERBER_FILES_LA/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
@@ -642,23 +641,15 @@
     "meta": {
       "version": 1
     },
-    "net_format_name": "",
     "page_layout_descr_file": "",
     "plot_directory": "",
     "reuse_designators": true,
-    "space_save_all_events": true,
-    "spice_current_sheet_as_root": false,
-    "spice_external_command": "spice \"%I\"",
-    "spice_model_current_sheet_as_root": true,
-    "spice_save_all_currents": false,
-    "spice_save_all_dissipations": false,
-    "spice_save_all_voltages": false,
     "subpart_first_id": 65,
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "ECE692_1.kicad_sch",
-        "name": "ECE692_1",
+        "filename": "ECE692_3.kicad_sch",
+        "name": "ECE692_3",
         "uuid": "998a2dad-8b13-4f29-9484-97d6ec94afb7"
       }
     ],
@@ -668,7 +659,7 @@
   "sheets": [
     [
       "998a2dad-8b13-4f29-9484-97d6ec94afb7",
-      "ECE692_1"
+      "ECE692_3"
     ]
   ],
   "text_variables": {},
