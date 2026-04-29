@@ -255,9 +255,15 @@ func Run(cfg *config.Config, tcpConnection net.Conn) error {
 					}
 
 				case config.UART:
-					// TODO: decoder.DecodeUART(packet.Samples[:], config.Pins)
+					results := decoder.DecodeUART(packet.Samples[:], cfg, 115200)
+					for _, transfer := range results.TX {
+						log.Printf(logging.StatLog(preamble) + "UART transfer over tx: t=%.0fus TX=0x%02X",
+							transfer.Timestamp, transfer.Data)
+					}
 				case config.I2C:
 					// TODO: decoder.DecodeI2C(packet.Samples[:], config.Pins)
+				default:
+					log.Println("Protocol not found: " + string(cfg.Protocol))
 				}
 
 			case CAN_H1:
