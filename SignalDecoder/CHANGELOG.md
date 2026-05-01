@@ -15,6 +15,33 @@ Put all SignalDecoder notes/changelog stuff here. Format adopted from [keepachan
 
 ## <older date/hash>
 ```
+
+## 10a24d3
+
+### Added
+
+- Added [internal/decoder/uart.go][10a24d3-01], which decodes UART signals.
+- It can be tested using the test python script [test.py][10a24d3-02]
+    - To run the test python script you must be on linux. First open a terminal and install socat. Then run smth like `sudo bash socat.sh /dev/ttyUSB0 /dev/ttyUSB1`
+    - In another terminal, make a venv and pip install the requirements.txt file.
+    - Then, run the test.py file and when prompted, enter `/dev/ttyUSB0`, along with a TX channel of ur choosing (there was a mistake in the code at this part, but was fixed in a later commit by Raghav, details below)
+    - Finally navigate to wherever the SignalDecoder binary is, and run (replace tx pin w/ ur chosen tx pin):
+
+```bash
+./SignalDecoder -port /dev/ttyUSB1 -duration 5000 -protocol uart -pins tx1rx2 -sr 1000000
+```
+- *NOTE:* There was a mistake in the go code for the [uart decoder][10a24d3-01] on line 37 and 38. I had made the txPin variable just `uint8(cfg.Pins >> 12)`, but in the case of the pin not being in the form of $2^n$ (such as 3 or 5), the pin number is no longer its own mask (which worked for pins 1, 2, 4 etc purely coincidentally :skull:). Raghav fixed this in [commit 626f507][10a24d3-03] with the proper mask using bitshifts.
+
+### Changed
+
+- Modified serial.go slightly to account for the uart decoder.
+
+<!-- Links for 10a24d3 -->
+
+[10a24d3-01]: https://github.com/ragusauce4357/ECE692-Final-Project/blob/10a24d39958ca57625ff5bdbd0d67016dab30254/SignalDecoder/internal/decoder/uart.go
+[10a24d3-02]: https://github.com/ragusauce4357/ECE692-Final-Project/blob/10a24d39958ca57625ff5bdbd0d67016dab30254/SignalDecoder/test/test.py
+[10a24d3-03]: https://github.com/ragusauce4357/ECE692-Final-Project/blob/626f507ff57ffe92b840a3199ed55d379f2f0023/SignalDecoder/internal/decoder/uart.go
+
 ## 78fd5ad
 - fixed the sequence tracking. Before it was tracking both the CAN and UART/SPI/I2C with the same sequence number, which caused dropped packet issues since seq numbers were being skipped CAN individually. Now added logic_seq and can_seq. 
 - Also fixed the sequence drop calculation overflow. B4 it was going from 255 -> 1 but saying the differnece is -255, but now it correctly says the difference and is 255 -> 0. No longer false drops. 
