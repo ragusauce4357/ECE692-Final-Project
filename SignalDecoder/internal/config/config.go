@@ -62,6 +62,7 @@ type Config struct {
 	SampleRate uint
 	Protocol ProtocolType
 	Pins     ProtocolPins
+	Baud     uint
 }
 
 // Performs a logical xor of two bools.
@@ -88,6 +89,7 @@ func GetConfig() (*Config, error) {
 	duration := flag.Float64("duration", float64(0x0), "Duration (in ms) to run signal capture.")
 	sampleRate := flag.Uint("sr", 0, "Sample rate (number of samples per second). Must be provided.")
 	protocol := flag.String("protocol", "", "(Optional) Protocol to decode.")
+	baudd := flag.Uint("baud", 0, "Baud rate. Use if decoding uart.")
 	list := flag.Bool("list", false, "List available ports")
 
 	flag.Parse()
@@ -144,6 +146,10 @@ func GetConfig() (*Config, error) {
 		ret.Protocol = NONE
 	case "UART":
 		ret.Protocol = UART
+		ret.Baud = *baudd
+		if *baudd <= 0 {
+			return nil, errors.New(logging.ErrLog(preamble) + "Must specify baud rate if decoding uart.")
+		}
 	case "SPI":
 		ret.Protocol = SPI
 	case "I2C":

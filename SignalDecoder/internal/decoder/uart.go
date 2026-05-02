@@ -27,7 +27,7 @@ type DecodedUARTPacket struct {
 // It is implemented as a state machine. Find the diagram and a example at docs/uart.md
 //
 // To be used by serial.Run() to ultimately decode a stream of packets.
-func DecodeUART(packet []byte, cfg *config.Config, baud uint) *DecodedUARTPacket {
+func DecodeUART(packet []byte, cfg *config.Config) *DecodedUARTPacket {
 	preamble := "[DecodeUART]: "
 
 	log.Println(logging.StatLog(preamble) + "Beginning UART Decoding...")
@@ -42,7 +42,7 @@ func DecodeUART(packet []byte, cfg *config.Config, baud uint) *DecodedUARTPacket
 	ret := &DecodedUARTPacket{}
 
 	var localTimestamp float64 = 0
-	samplesPerBit := cfg.SampleRate / baud
+	samplesPerBit := cfg.SampleRate / cfg.Baud
 	timePerSample := (1.0 / float64(cfg.SampleRate)) * 1000000
 
 	// State constants

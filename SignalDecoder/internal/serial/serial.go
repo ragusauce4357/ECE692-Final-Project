@@ -255,7 +255,7 @@ func Run(cfg *config.Config, tcpConnection net.Conn) error {
 					}
 
 				case config.UART:
-					results := decoder.DecodeUART(packet.Samples[:], cfg, 115200)
+					results := decoder.DecodeUART(packet.Samples[:], cfg)
 					for _, transfer := range results.TX {
 						log.Printf(logging.StatLog(preamble) + "UART transfer over tx: t=%.0fus TX=0x%02X",
 							transfer.Timestamp, transfer.Data)
