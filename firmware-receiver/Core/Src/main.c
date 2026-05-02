@@ -52,6 +52,8 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 #define DATA_CHUNK 512
 #define DMA_BUF_SIZE (DATA_CHUNK*2) // 1024 bytes
+volatile uint8_t send_first_half = 0;
+volatile uint8_t send_second_half = 0;
 
 //The DMA will dump the GPIO samples here
 //I'm using the ping-pong idea we talked about but with the circular array
@@ -74,7 +76,7 @@ static void MX_TIM1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_CAN1_Init(void);
 /* USER CODE BEGIN PFP */
-
+void send_logic_packet(uint8_t *data_ptr);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -179,6 +181,16 @@ int main(void)
 	    // Wait half a second
 	    HAL_Delay(2000);
 		*/
+	    if (send_first_half)
+	    {
+	        send_first_half = 0;
+	        send_logic_packet(&dma_buf[0]);
+	    }
+	    if (send_second_half)
+	    {
+	        send_second_half = 0;
+	        send_logic_packet(&dma_buf[DATA_CHUNK]);
+	    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -288,7 +300,7 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 0;
+  htim1.Init.Prescaler = 99;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim1.Init.Period = 167;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -453,13 +465,14 @@ void send_logic_packet(uint8_t *data_ptr)
 	packet[515] = checksum;
 
 	//Monitor for overflows here!
-	if (CDC_Transmit_FS(packet, 516) != USBD_OK)
+	if (HAL_UART_Transmit(&huart2, packet, 516, HAL_MAX_DELAY)!= HAL_OK)
 	{
 		//This means that the PC isn't reading fast enough
 	    static uint32_t dropped_packets = 0;
 	    dropped_packets++;
 	}
 }
+/*
 void HAL_DMA_XferHalfCpltCallback(DMA_HandleTypeDef *hdma) {
     if (hdma == &hdma_tim1_up) {
     	send_logic_packet(&dma_buf[0]);
@@ -469,6 +482,18 @@ void HAL_DMA_XferHalfCpltCallback(DMA_HandleTypeDef *hdma) {
 void HAL_DMA_XferCpltCallback(DMA_HandleTypeDef *hdma) {
     if (hdma == &hdma_tim1_up) {
     	send_logic_packet(&dma_buf[DATA_CHUNK]);
+    }
+}
+*/
+void HAL_DMA_XferHalfCpltCallback(DMA_HandleTypeDef *hdma) {
+    if (hdma == &hdma_tim1_up) {
+        send_first_half = 1;  // was: send_logic_packet(&dma_buf[0])
+    }
+}
+
+void HAL_DMA_XferCpltCallback(DMA_HandleTypeDef *hdma) {
+    if (hdma == &hdma_tim1_up) {
+        send_second_half = 1;  // was: send_logic_packet(&dma_buf[DATA_CHUNK])
     }
 }
 
@@ -522,7 +547,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
         //total bytes to send:
         //Headers(2) + Seq(1) + ID(2) + DLC(1) + Data(DLC) + checksum(1)
         // Total is 7 + DLC
-        CDC_Transmit_FS(packet, 7 + rxHeader.DLC);
+        HAL_UART_Transmit(&huart2, packet, 7 + rxHeader.DLC, HAL_MAX_DELAY);
     }
 }
 
@@ -539,6 +564,7 @@ void Error_Handler(void)
   __disable_irq();
   while (1)
   {
+
   }
   /* USER CODE END Error_Handler_Debug */
 }
