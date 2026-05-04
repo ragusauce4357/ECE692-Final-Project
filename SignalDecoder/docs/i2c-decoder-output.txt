@@ -1,0 +1,397 @@
+raghav@RaghavPC:/mnt/c/Users/ragha/OneDrive/Desktop/ECE692-Final-Project/SignalDecoder$ go run . --port /tmp/ttyV1 --protocol I2C --pins scl7sda8 --sr 1000000 --duration 5000
+2026/05/03 22:19:16 [GetConfig]: Parsing arguments...
+2026/05/03 22:19:16 [GetConfig]: No serial ports found via enumeration, proceeding anyway.
+2026/05/03 22:19:16 [parsePins]: Parsing pins argument...
+2026/05/03 22:19:16 [parseI2C]: Parsing I2C pins...
+2026/05/03 22:19:16 [parseI2C]: Using channels 8, 7, for sda and scl
+2026/05/03 22:19:16 [parseI2C]: Completed I2C pin parsing.
+2026/05/03 22:19:16 [GetConfig]: CLI argument error checking complete.
+2026/05/03 22:19:16 [print] Current configuration:
+2026/05/03 22:19:16 [print]   Port:        /tmp/ttyV1
+2026/05/03 22:19:16 [print]   Duration:    5000.000000
+2026/05/03 22:19:16 [print]   Sample Rate: 0xF4240
+2026/05/03 22:19:16 [print]   Protocol:    3
+2026/05/03 22:19:16 [print]   Pins:        0x8700
+2026/05/03 22:19:16 [Run]: Running for 5000 ms
+2026/05/03 22:19:16 [ReadByteStream]: Opened port.
+2026/05/03 22:19:16 [ReadByteStream]: Started streaming from /tmp/ttyV1...
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=27
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=13827us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=27 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=28
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=14339us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=28 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=29
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=14851us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=29 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=30
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=15363us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=30 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=31
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=15875us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=31 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=32
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=16387us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=32 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=33
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=16899us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=33 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=34
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=17411us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=34 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=35
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=17923us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=35 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=36
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=18435us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=36 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=37
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=18947us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=37 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=38
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=19459us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=38 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=39
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=19971us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=39 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=40
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=20483us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=40 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=41
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=20995us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=41 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=42
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=21507us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=42 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=43
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=22019us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=43 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=44
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=22531us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=44 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=45
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=23043us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=45 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=46
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=23555us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=46 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=47
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=24067us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=47 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=48
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=24579us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=48 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=49
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=25091us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=49 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=50
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=25603us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=50 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=51
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=26115us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=51 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=52
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=26627us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=52 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=53
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=27139us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=53 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=54
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=27651us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=54 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=55
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=28163us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=55 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=56
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=28675us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=56 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=57
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=29187us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=57 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=58
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=29699us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=58 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=59
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=30211us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=59 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=60
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=30723us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=60 ID=0x123 DLC=8
+2026/05/03 22:19:16 [parseLogicPacket]: Logic packet seq=61
+2026/05/03 22:19:16 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=31235us
+2026/05/03 22:19:16 [parseCANPacket]: CAN packet seq=61 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=62
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=31747us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=62 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=63
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=32259us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=63 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=64
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=32771us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=64 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=65
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=33283us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=65 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=66
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=33795us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=66 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=67
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=34307us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=67 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=68
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=34819us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=68 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=69
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=35331us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=69 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=70
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=35843us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=70 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=71
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=36355us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=71 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=72
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=36867us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=72 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=73
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=37379us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=73 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=74
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=37891us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=74 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=75
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=38403us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=75 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=76
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=38915us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=76 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=77
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=39427us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=77 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=78
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=39939us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=78 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=79
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=40451us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=79 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=80
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=40963us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=80 ID=0x123 DLC=8
+2026/05/03 22:19:17 [parseLogicPacket]: Logic packet seq=81
+2026/05/03 22:19:17 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=41475us
+2026/05/03 22:19:17 [parseCANPacket]: CAN packet seq=81 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=82
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=41987us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=82 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=83
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=42499us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=83 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=84
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=43011us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=84 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=85
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=43523us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=85 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=86
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=44035us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=86 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=87
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=44547us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=87 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=88
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=45059us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=88 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=89
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=45571us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=89 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=90
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=46083us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=90 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=91
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=46595us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=91 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=92
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=47107us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=92 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=93
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=47619us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=93 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=94
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=48131us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=94 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=95
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=48643us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=95 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=96
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=49155us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=96 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=97
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=49667us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=97 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=98
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=50179us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=98 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=99
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=50691us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=99 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=100
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=51203us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=100 ID=0x123 DLC=8
+2026/05/03 22:19:18 [parseLogicPacket]: Logic packet seq=101
+2026/05/03 22:19:18 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=51715us
+2026/05/03 22:19:18 [parseCANPacket]: CAN packet seq=101 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=102
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=52227us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=102 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=103
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=52739us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=103 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=104
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=53251us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=104 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=105
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=53763us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=105 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=106
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=54275us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=106 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=107
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=54787us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=107 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=108
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=55299us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=108 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=109
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=55811us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=109 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=110
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=56323us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=110 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=111
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=56835us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=111 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=112
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=57347us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=112 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=113
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=57859us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=113 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=114
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=58371us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=114 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=115
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=58883us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=115 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=116
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=59395us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=116 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=117
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=59907us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=117 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=118
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=60419us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=118 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=119
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=60931us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=119 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=120
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=61443us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=120 ID=0x123 DLC=8
+2026/05/03 22:19:19 [parseLogicPacket]: Logic packet seq=121
+2026/05/03 22:19:19 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=61955us
+2026/05/03 22:19:19 [parseCANPacket]: CAN packet seq=121 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=122
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=62467us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=122 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=123
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=62979us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=123 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=124
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=63491us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=124 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=125
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=64003us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=125 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=126
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=64515us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=126 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=127
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=65027us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=127 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=128
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=65539us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=128 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=129
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=66051us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=129 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=130
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=66563us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=130 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=131
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=67075us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=131 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=132
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=67587us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=132 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=133
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=68099us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=133 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=134
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=68611us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=134 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=135
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=69123us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=135 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=136
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=69635us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=136 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=137
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=70147us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=137 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=138
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=70659us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=138 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=139
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=71171us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=139 ID=0x123 DLC=8
+2026/05/03 22:19:20 [parseLogicPacket]: Logic packet seq=140
+2026/05/03 22:19:20 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=71683us
+2026/05/03 22:19:20 [parseCANPacket]: CAN packet seq=140 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=141
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=72195us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=141 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=142
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=72707us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=142 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=143
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=73219us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=143 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=144
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=73731us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=144 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=145
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=74243us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=145 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=146
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=74755us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=146 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=147
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=75267us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=147 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=148
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=75779us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=148 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=149
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=76291us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=149 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=150
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=76803us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=150 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=151
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=77315us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=151 ID=0x123 DLC=8
+2026/05/03 22:19:21 [parseLogicPacket]: Logic packet seq=152
+2026/05/03 22:19:21 [Run]: I2C addr=0x52 rw=false data=4932432054657374 acks=[true true true true true true true true true] err=false t=77827us
+2026/05/03 22:19:21 [parseCANPacket]: CAN packet seq=152 ID=0x123 DLC=8
+2026/05/03 22:19:21 [Run]: Capture complete.
+raghav@RaghavPC:/mnt/c/Users/ragha/OneDrive/Desktop/ECE692-Final-Project/SignalDecoder$

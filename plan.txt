@@ -1,0 +1,448 @@
+# Logic Analyzer Project Plan
+ECE 692 — STM32F446RE — 5 person team — Due early May
+
+---
+
+## Architecture Overview
+
+```
+Target device (UART/SPI/I2C/CAN signals)
+    |
+    v
+Breakout board (TXS0108E level shifter, protection resistors, Schottky diodes)
+    |
+    v
+STM32F446RE (GPIO DMA sampling → USB CDC streaming)
+    |  [Micro-USB, 12 Mbps FS]
+    v
+PC Python app
+    ├── Serial reader (pyserial)
+    ├── 64KB ring buffer (absorbs OS jitter)
+    ├── Protocol decoders (Python + optional C/C++ extensions)
+    └── Visualizer (pyqtgraph)
+```
+
+---
+
+## Data Format Contract
+**Agree on this before writing any firmware or Python code.**
+
+- 1 byte per sample, 8 channels packed as bits [CH7:CH0]
+- Sample rate configurable: 1MHz default
+- Timestamp derived from sample index × sample period (no per-sample timestamp needed)
+- Framing: 4-byte sync word 0xDEADBEEF at start of each USB transfer block
+- Block size: 512 bytes (512 samples) per USB transfer
+
+Example block:
+```
+[0xDE 0xAD 0xBE 0xEF] [sample_0] [sample_1] ... [sample_511]
+```
+
+---
+
+## Team Assignments
+
+| Person | Branch | Responsibility |
+|--------|--------|----------------|
+| 1 | feature/stm32-firmware | DMA sampling, USB CDC TX, timer config |
+| 2 | feature/stm32-firmware | CubeMX setup, peripheral init, testing |
+| 3 | feature/serial-comms | pyserial reader, ring buffer, frame parser |
+| 4 | feature/visualization | pyqtgraph waveform display, UI |
+| 5 | feature/protocol-decoders + feature/enclosure | UART/SPI/I2C/CAN decoders, KiCad breakout board |
+
+---
+
+## Phase 1 — CubeMX Configuration
+
+**Do this first. Generates all HAL init code.**
+
+### Peripherals to enable:
+
+**Clock:**
+- System clock: 180MHz (max for F446RE)
+- Enable HSE (external oscillator on Nucleo)
+- Configure PLL accordingly in CubeMX clock tree
+
+**GPIO:**
+- Select one full 8-bit port for sampling (e.g. PB0–PB7)
+- Set all 8 pins as GPIO_Input, no pull, high speed
+
+**Timer:**
+- TIM2 in output compare mode
+- Period set to achieve 1MHz sample rate: ARR = (180MHz / 1MHz) - 1 = 179
+- Enable TIM2 DMA request on update event
+
+**DMA:**
+- DMA1 Stream 1, Channel 3 (TIM2 Update → Memory)
+- Direction: Peripheral to Memory
+- Peripheral address: GPIOB->IDR (0x40020410)
+- Memory: circular double buffer, 512 bytes each
+- Data width: byte → byte
+- Enable DMA transfer complete interrupt
+
+**USB:**
+- USB_OTG_FS in Device Only mode
+- Middleware: USB Device, CDC class
+- Enable USB interrupt, priority 5
+
+**UART/SPI/I2C/CAN (for future active sniffing mode):**
+- USART1: PA9 TX, PA10 RX — enable, async mode
+- SPI1: PA5 SCK, PA6 MISO, PA7 MOSI — enable, slave mode
+- I2C1: PB6 SCL, PB7 SDA — enable
+- CAN1: PB8 RX, PB9 TX — enable (requires SN65HVD230 transceiver on breakout board)
+
+**NVIC:**
+- DMA1 Stream1 interrupt: priority 3
+- USB OTG FS interrupt: priority 5
+- Keep USB higher priority number (lower priority) than DMA
+
+### After generating:
+- Open project in STM32CubeIDE
+- Verify clock tree looks correct (180MHz HCLK)
+- Do a test build before writing any application code
+
+---
+
+## Phase 2 — STM32 Firmware
+
+**Branch: feature/stm32-firmware**
+
+### Step 1 — DMA double buffer setup
+```c
+// Two 512-byte buffers
+uint8_t buf_A[512];
+uint8_t buf_B[512];
+volatile uint8_t active_buf = 0;
+
+// In main, after MX_DMA_Init():
+HAL_DMAEx_MultiBufferStart_IT(&hdma_tim2_up,
+    (uint32_t)&GPIOB->IDR,
+    (uint32_t)buf_A,
+    (uint32_t)buf_B,
+    512);
+HAL_TIM_Base_Start(&htim2);
+```
+
+### Step 2 — DMA transfer complete callback
+```c
+void HAL_DMA_ConvCpltCallback(DMA_HandleTypeDef *hdma) {
+    if (hdma == &hdma_tim2_up) {
+        // buf_A just finished, DMA now filling buf_B
+        // send buf_A over USB
+        uint8_t frame[516];
+        frame[0] = 0xDE; frame[1] = 0xAD;
+        frame[2] = 0xBE; frame[3] = 0xEF;
+        memcpy(&frame[4], buf_A, 512);
+        CDC_Transmit_FS(frame, 516);
+    }
+}
+
+void HAL_DMA_ConvM1CpltCallback(DMA_HandleTypeDef *hdma) {
+    if (hdma == &hdma_tim2_up) {
+        // buf_B just finished, DMA now filling buf_A
+        uint8_t frame[516];
+        frame[0] = 0xDE; frame[1] = 0xAD;
+        frame[2] = 0xBE; frame[3] = 0xEF;
+        memcpy(&frame[4], buf_B, 512);
+        CDC_Transmit_FS(frame, 516);
+    }
+}
+```
+
+### Step 3 — Verify in CubeIDE
+- Use STM32CubeIDE's live watch to confirm DMA is running
+- Check USB shows up as COM port on PC before integrating with Python
+
+### Key things to watch out for:
+- CDC_Transmit_FS is non-blocking — check return value for USBD_BUSY and retry
+- GPIO IDR is 16 bits wide, only lower 8 bits used (PB0–PB7), mask with 0xFF
+- Make sure TIM2 is started after DMA is configured, not before
+
+---
+
+## Phase 3 — Python Serial Layer
+
+**Branch: feature/serial-comms**
+
+### serial_reader.py
+```python
+import serial
+import threading
+from collections import deque
+
+SYNC = b'\xDE\xAD\xBE\xEF'
+BLOCK_SIZE = 512
+FRAME_SIZE = 516
+SAMPLE_RATE = 1_000_000  # 1 MHz
+
+class SerialReader:
+    def __init__(self, port, buffer_size=65536):
+        self.port = serial.Serial(port, baudrate=2000000, timeout=1)
+        self.ring_buffer = deque(maxlen=buffer_size)
+        self.lock = threading.Lock()
+        self.running = False
+
+    def start(self):
+        self.running = True
+        self.thread = threading.Thread(target=self._read_loop, daemon=True)
+        self.thread.start()
+
+    def _read_loop(self):
+        raw = b''
+        while self.running:
+            raw += self.port.read(FRAME_SIZE)
+            idx = raw.find(SYNC)
+            if idx == -1:
+                raw = raw[-4:]  # keep last 4 bytes in case sync spans reads
+                continue
+            raw = raw[idx:]
+            if len(raw) < FRAME_SIZE:
+                continue
+            frame = raw[:FRAME_SIZE]
+            raw = raw[FRAME_SIZE:]
+            samples = list(frame[4:])  # strip sync word
+            with self.lock:
+                self.ring_buffer.extend(samples)
+
+    def read_samples(self, n):
+        with self.lock:
+            if len(self.ring_buffer) < n:
+                return None
+            return [self.ring_buffer.popleft() for _ in range(n)]
+
+    def stop(self):
+        self.running = False
+        self.port.close()
+```
+
+---
+
+## Phase 4 — Protocol Decoders
+
+**Branch: feature/protocol-decoders**
+
+Each decoder takes a list of raw samples, a sample rate, and channel assignments and returns a list of decoded events with timestamps.
+
+### Decoder interface (all decoders follow this pattern):
+```python
+def decode_uart(samples, sample_rate, channel, baud_rate=115200):
+    """
+    Returns list of: {'timestamp_us': int, 'byte': int, 'char': str, 'error': bool}
+    """
+    events = []
+    bit_samples = int(sample_rate / baud_rate)
+    i = 0
+    while i < len(samples):
+        bit = (samples[i] >> channel) & 1
+        if bit == 0:  # start bit detected
+            i += bit_samples // 2  # move to middle of start bit
+            byte = 0
+            for b in range(8):
+                i += bit_samples
+                if i >= len(samples):
+                    break
+                byte |= (((samples[i] >> channel) & 1) << b)
+            events.append({
+                'timestamp_us': int(i / sample_rate * 1e6),
+                'byte': byte,
+                'char': chr(byte) if 32 <= byte < 127 else '.',
+                'error': False
+            })
+            i += bit_samples  # skip stop bit
+        else:
+            i += 1
+    return events
+```
+
+### Decoder roadmap:
+1. **UART** — implement first, simplest, good for verifying pipeline end-to-end
+2. **SPI** — watch CLK channel, sample MOSI/MISO on configured edge
+3. **I2C** — watch SDA/SCL, detect START/STOP conditions, reconstruct bytes + ACK
+4. **CAN** — most complex, consider C extension if Python too slow at 1Mbps
+
+### C extension (if needed for CAN):
+```c
+// can_decoder.c — compile as Python C extension or call via ctypes
+#include <stdint.h>
+
+int decode_can_frame(uint8_t *samples, int n_samples,
+                     int sample_rate, int bitrate,
+                     uint32_t *out_id, uint8_t *out_data, int *out_len) {
+    // CAN NRZ decoding with bit stuffing removal
+    // Returns 1 on success, 0 on error
+    // ...
+}
+```
+
+Compile and call from Python:
+```python
+import ctypes
+lib = ctypes.CDLL('./can_decoder.so')
+# call lib.decode_can_frame(...)
+```
+
+---
+
+## Phase 5 — Visualization
+
+**Branch: feature/visualization**
+
+### Stack: PyQt5 + pyqtgraph
+
+```python
+import pyqtgraph as pg
+from PyQt5 import QtWidgets
+import numpy as np
+
+class LogicAnalyzerApp(QtWidgets.QMainWindow):
+    def __init__(self, reader):
+        super().__init__()
+        self.reader = reader
+        self.setWindowTitle('ECE 692 Logic Analyzer')
+
+        # 8 waveform traces, one per channel
+        self.plot_widget = pg.GraphicsLayoutWidget()
+        self.setCentralWidget(self.plot_widget)
+        self.plots = []
+        self.curves = []
+
+        for i in range(8):
+            p = self.plot_widget.addPlot(row=i, col=0)
+            p.setLabel('left', f'CH{i}')
+            p.setYRange(-0.1, 1.1)
+            p.hideAxis('bottom') if i < 7 else p.setLabel('bottom', 'Time (us)')
+            c = p.plot(pen=pg.mkPen('g', width=1))
+            self.plots.append(p)
+            self.curves.append(c)
+
+        # Timer to pull new samples and redraw
+        self.timer = pg.QtCore.QTimer()
+        self.timer.timeout.connect(self.update_plot)
+        self.timer.start(50)  # 20 fps
+
+    def update_plot(self):
+        samples = self.reader.read_samples(1000)
+        if samples is None:
+            return
+        arr = np.array(samples, dtype=np.uint8)
+        for i in range(8):
+            channel_data = (arr >> i) & 1
+            self.curves[i].setData(channel_data)
+```
+
+### UI features to add (in priority order):
+1. Start/stop capture button
+2. Sample rate selector dropdown
+3. Channel enable/disable toggles
+4. Protocol decoder overlay (show decoded bytes below waveform)
+5. Zoom/pan (pyqtgraph handles this for free with mouse)
+6. Export to CSV
+
+---
+
+## Phase 6 — Breakout Board (KiCad)
+
+**Branch: feature/enclosure**
+
+### Schematic components:
+- J1: 2×18 pin female header (Nucleo morpho left connector)
+- J2: 2×18 pin female header (Nucleo morpho right connector)
+- U1: TXS0108E (level shifter, 8 channels)
+- U2: SN65HVD230 (CAN transceiver)
+- R1–R8: 1kΩ 0402 (series protection, one per channel)
+- D1–D8: BAT54 SOD-123 (Schottky clamp, one per channel)
+- C1–C4: 100nF 0402 ceramic (decoupling, one per IC)
+- C5–C6: 10µF electrolytic (bulk decoupling)
+- R9–R10: 4.7kΩ 0402 (I2C pull-ups on SDA/SCL)
+- J3: 10-pin 2.54mm header (8 probe inputs + 2 GND)
+- J4: 2-pin screw terminal (CANH/CANL)
+
+### PCB constraints:
+- Must fit within Nucleo Arduino header footprint
+- Keep probe connector J3 on board edge for easy access
+- Place decoupling caps as close to IC power pins as possible
+- CAN transceiver near J4 screw terminal
+
+### Order checklist:
+- [ ] Schematic complete and ERC clean
+- [ ] PCB layout complete and DRC clean
+- [ ] Gerbers exported
+- [ ] Order from JLCPCB (5 boards, ~$5 + shipping)
+- [ ] **Order at least 2 weeks before demo date**
+
+---
+
+## Enclosure (3D Print)
+
+- Material: PLA (easier) or PETG (tougher)
+- Outer dimensions: ~80mm × 135mm × 40mm (sized around Nucleo + breakout board stack)
+- Cutouts needed:
+  - Micro-USB port (bottom edge of Nucleo)
+  - Mini-USB port (top of Nucleo, for debugging access)
+  - Probe header J3 (front face)
+  - CAN screw terminal J4 (front face)
+- Lid: screwed with 4x M3 brass heat-set inserts + M3×8mm screws
+- Print 2 iterations — first rarely fits perfectly
+
+---
+
+## Parts List
+
+| Component | Qty | Source |
+|-----------|-----|--------|
+| Nucleo-F446RE | 1 | DigiKey / Mouser |
+| TXS0108E | 1 | DigiKey |
+| SN65HVD230 | 1 | DigiKey |
+| 1kΩ resistor 0402 | 10 | DigiKey |
+| BAT54 Schottky SOD-123 | 10 | DigiKey |
+| 4.7kΩ resistor 0402 | 5 | DigiKey |
+| 100nF ceramic cap 0402 | 10 | DigiKey |
+| 10µF electrolytic cap | 5 | DigiKey |
+| 2.54mm pin headers | 1 strip | DigiKey / Amazon |
+| 2-pin screw terminal | 2 | DigiKey |
+| M3 brass heat-set inserts | 5 | Amazon |
+| M3×8mm screws | 5 | Amazon |
+| Custom breakout PCB | 5 | JLCPCB |
+| Arduino Uno (for testing) | 1 | Amazon |
+| Jumper wires / grabber clips | 1 set | Amazon |
+
+---
+
+## Timeline
+
+| Week | Milestone |
+|------|-----------|
+| Week 1 | CubeMX done, data format spec written, KiCad schematic started |
+| Week 2 | Firmware DMA streaming working, Python serial reader working, PCB ordered |
+| Week 3 | End-to-end raw capture working (STM32 → Python → display), UART decoder done |
+| Week 4 | All decoders done, PCB arrived and tested, enclosure printed |
+| Week 4.5 | Integration, full demo rehearsal, bug fixes |
+| Week 5 | Demo |
+
+---
+
+## Critical Path Items (do these first)
+
+1. **Write the data format spec** — unblocks firmware and Python teams simultaneously
+2. **CubeMX pin assignment** — firmware team blocked until this is done
+3. **Order PCB** — 1.5 week lead time, start KiCad immediately
+4. **Order Nucleo-F446RE** — if you don't have one already
+
+---
+
+## Git Workflow
+
+```
+master        ← demo-safe, merge only at stable milestones
+dev           ← integration branch, merges from feature branches
+├── feature/stm32-firmware
+├── feature/serial-comms
+├── feature/visualization
+├── feature/protocol-decoders
+└── feature/enclosure
+```
+
+- All work happens on feature branches
+- PR into dev, at least 1 review required
+- Merge dev → master only when demo-ready
+- Never push directly to master
